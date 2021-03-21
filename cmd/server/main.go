@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"context"
 	"flag"
@@ -16,8 +15,7 @@ import (
 	"github.com/oklog/run"
 	"github.com/sirupsen/logrus"
 
-	"files/cmd/middleware"
-	mysqlconnect "files/repository/mysql"
+	"files/repository/mysqlconnect"
 	"files/service/file"
 	"files/service/router"
 	"files/transport/handler"
@@ -44,7 +42,7 @@ func main() {
 
 	// Internal API
 	api := r.PathPrefix("/v1").Subrouter()
-	middleware.ServerHandler(api)
+
 	muxRouter := router.NewMuxRouter(api, logging)
 	handler.NewFile(muxRouter, fileSvc, logging)
 

@@ -20,8 +20,8 @@ func NewFile(router service.Router, fileService service.File, logger service.Log
 		svc: fileService,
 		log: logger,
 	}
-	router.Get("/users", handler.List)
-	router.Get("/users/{id}", handler.Get)
+	router.Get("/files", handler.List)
+	router.Get("/files/{id}", handler.Get)
 }
 
 func (h *file) List(w http.ResponseWriter, r *http.Request) error {
