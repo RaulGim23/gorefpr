@@ -1,4 +1,4 @@
-package mysql
+package mysqlconnect
 
 import (
 	"context"
@@ -19,6 +19,10 @@ const (
 
 type fileRepository struct {
 	db repository.Database
+}
+
+func File(database repository.Database) repository.File {
+	return &fileRepository{db: database}
 }
 
 // Find returns an user
