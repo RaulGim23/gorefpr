@@ -13,7 +13,7 @@ const (
 	sqlGetUser		= "SELECT * FROM files WHERE id=?"
 	sqlSelectFiles 	= "SELECT * FROM files"
 	sqlInsertFile 	= "INSERT INTO files (file_name, date) VALUES(?, ?)"
-	sqlUpdateFile 	= "UPDATE files SET file_name=?, date=? WHERE id=?"
+	sqlUpdateFile 	= "UPDATE files SET (%s) WHERE id=?"
 	sqlDeleteFile 	= "DELETE FROM files WHERE id=?"
 )
 
