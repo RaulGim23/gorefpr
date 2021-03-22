@@ -1,4 +1,4 @@
-module file
+module files
 
 go 1.16
 
