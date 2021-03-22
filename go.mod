@@ -1,4 +1,4 @@
-module files
+module github.com/RaulGim23/gorefpr
 
 go 1.16
 
