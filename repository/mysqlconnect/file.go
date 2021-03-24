@@ -2,39 +2,38 @@ package mysqlconnect
 
 import (
 	"context"
-	"fmt"
 	"strings"
+
+	"github.com/Masterminds/squirrel"
 
 	"files/model"
 	"files/repository"
 )
 
 const (
-	sqlGetUser		= "SELECT * FROM files WHERE id=?"
-	sqlSelectFiles 	= "SELECT * FROM files"
-	sqlInsertFile 	= "INSERT INTO files (file_name, date) VALUES(?, ?)"
-	sqlUpdateFile 	= "UPDATE files SET (%s) WHERE id=?"
-	sqlDeleteFile 	= "DELETE FROM files WHERE id=?"
+	sqlFileTable = "files"
 )
 
 type fileRepository struct {
 	db repository.Database
 }
 
+// File the file repository.
 func File(database repository.Database) repository.File {
 	return &fileRepository{db: database}
 }
 
-// Find returns an user
+// Find returns an file by ID.
 func (r *fileRepository) Find(ctx context.Context, id int64) (*model.File, error) {
-	return r.Scan(r.db.QueryRowContext(ctx, sqlGetUser, id))
+	return r.Scan(squirrel.Select("*").From(sqlFileTable).Where("id=?", id).
+		RunWith(r.db).QueryRowContext(ctx))
 }
 
-// FindAll
+// FindAll return a list of files.
 func (r *fileRepository) FindAll(ctx context.Context) ([]model.File, error) {
-	rows, err := r.db.QueryContext(ctx, sqlSelectFiles)
+	rows, err := squirrel.Select("*").From(sqlFileTable).RunWith(r.db).QueryContext(ctx)
 	if err != nil {
-		return nil, err;
+		return nil, err
 	}
 	defer rows.Close()
 
@@ -45,47 +44,52 @@ func (r *fileRepository) FindAll(ctx context.Context) ([]model.File, error) {
 		if err != nil {
 			return nil, err
 		}
+
 		files = append(files, *file)
 	}
+
 	return files, nil
 }
 
-// Store
+// Store create a file record.
 func (r *fileRepository) Store(ctx context.Context, u *model.File) error {
-	result, err := r.db.ExecContext(ctx, sqlInsertFile, u.FileName, u.Date)
+	result, err := squirrel.Insert(sqlFileTable).Columns("file_name", "date").
+		Values(u.FileName, u.Date).RunWith(r.db).ExecContext(ctx)
 	if err != nil {
 		return err
 	}
+
 	u.ID, err = result.LastInsertId()
+
 	return err
 }
 
-// Update a file
-func (r *fileRepository) Update(ctx context.Context, u *model.File) error {
-	var fields []string
-	var params []interface{}
-	if strings.TrimSpace(u.FileName) != "" {
-		fields = append(fields, "`file_name`=?")
-		params = append(params, u.FileName)
-	}
-	if strings.TrimSpace(u.Date) != "" {
-		fields = append(fields, "`date`=?")
-		params = append(params, u.Date)
+// Update a file record.
+func (r *fileRepository) Update(ctx context.Context, f *model.File) error {
+	sql := squirrel.Update(sqlFileTable)
+
+	if strings.TrimSpace(f.FileName) != "" {
+		sql = sql.Set("file_name", f.FileName)
 	}
 
-	query := fmt.Sprintf(sqlUpdateFile, strings.Join(fields, ","))
-	_, err := r.db.ExecContext(ctx, query, append(params, u.ID)...)
+	if strings.TrimSpace(f.Date) != "" {
+		sql = sql.Set("date", f.Date)
+	}
+
+	_, err := sql.Where("id=?", f.ID).RunWith(r.db).ExecContext(ctx)
+
 	return err
 }
 
-// Delete a user by ID
+// Delete a file by ID.
 func (r *fileRepository) Delete(ctx context.Context, id int64) error {
-	_, err := r.db.ExecContext(ctx, sqlDeleteFile, id)
+	_, err := squirrel.Delete(sqlFileTable).Where("id=?", id).RunWith(r.db).ExecContext(ctx)
+
 	return err
 }
 
-// Scan models.User row scanner
-func (r *fileRepository) Scan(row repository.Scanner) (*model.File, error) {
+// Scan models.File row scanner.
+func (r fileRepository) Scan(row repository.Scanner) (*model.File, error) {
 	file := &model.File{}
 	return file, row.Scan(
 		&file.ID,

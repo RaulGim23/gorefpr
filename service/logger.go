@@ -1,6 +1,6 @@
 package service
 
-// Logger the logger implementation
+// Logger the logger definition.
 type Logger interface {
 	Debugf(string, ...interface{})
 	Infof(string, ...interface{})
@@ -8,11 +8,12 @@ type Logger interface {
 	Errorf(string, ...interface{})
 }
 
-// StandardLogger go doc
+// StandardLogger godoc.
 type StandardLogger interface {
 	Printf(string, ...interface{})
 }
 
+// NopLogger godoc.
 func NopLogger() Logger { return &nopLogger{} }
 
 type nopLogger struct{}

@@ -21,15 +21,20 @@ import (
 	"files/transport/handler"
 )
 
+const (
+	timeout = 20 * time.Second
+)
+
 func main() {
 	var httpServerAddress string
 
-	flag.StringVar(&httpServerAddress,"addr",":3380","The http listen address")
+	flag.StringVar(&httpServerAddress, "addr", ":3380", "The http listen address")
 	flag.Parse()
 
 	db, err := mysqlconnect.Database("root:@tcp(127.0.0.1:3306)/asd")
 	if err != nil {
-		log.Printf("database %s",err)
+		log.Printf("database %s", err)
+
 		return
 	}
 	defer db.Close()
@@ -47,22 +52,22 @@ func main() {
 	handler.NewFile(muxRouter, fileSvc, logging)
 
 	httpd := &http.Server{
-		Addr: httpServerAddress,
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
+		Addr:           httpServerAddress,
+		ReadTimeout:    timeout,
+		WriteTimeout:   timeout,
 		MaxHeaderBytes: 1 << 20,
 		Handler:        r,
 	}
 
 	var g run.Group
 
-	ctx, _ := context.WithCancel(context.Background())
+	//ctx, cancel := context.WithCancel(context.Background())
 	g.Add(
 		func() error {
 			return httpd.ListenAndServe()
 		},
 		func(error) {
-			_ = httpd.Shutdown(ctx)
+			_ = httpd.Shutdown(context.Background())
 		},
 	)
 	/*
