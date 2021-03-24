@@ -2,10 +2,9 @@ package mysqlconnect
 
 import (
 	"database/sql"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
+// Database godoc.
 func Database(mysql string) (*sql.DB, error) {
 	db, err := sql.Open("mysql", mysql)
 	if err != nil {

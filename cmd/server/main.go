@@ -19,6 +19,8 @@ import (
 	"files/service/file"
 	"files/service/router"
 	"files/transport/handler"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 const (
