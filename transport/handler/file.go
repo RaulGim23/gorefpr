@@ -27,8 +27,10 @@ func NewFile(router service.Router, fileService service.File, logger service.Log
 
 // List godoc.
 func (h *file) List(w http.ResponseWriter, r *http.Request) error {
-	urlOrder := r.URL.Query().Get("order")
-	urlOrderBy := r.URL.Query().Get("orderBy")
+	order := r.URL.Query().Get("order")
+	orderBy := ToSnakeCase(r.URL.Query().Get("orderBy"))
+	orderBys := []string{orderBy, order}
+
 	page, err := uintFromQuery(r, "page", 0)
 	if err != nil {
 		return response.NewError(w, http.StatusBadRequest, "invalid page value")
@@ -39,7 +41,7 @@ func (h *file) List(w http.ResponseWriter, r *http.Request) error {
 		return response.NewError(w, http.StatusBadRequest, "invalid limit value")
 	}
 
-	files, total, err := response.FromFilesModel(h.svc.FindAll(r.Context(), urlOrder, urlOrderBy, page, limit))
+	files, total, err := response.FromFilesModel(h.svc.FindAll(r.Context(), orderBys, page, limit))
 	if err != nil {
 		return response.NewError(w, http.StatusInternalServerError, "no entries")
 	}
