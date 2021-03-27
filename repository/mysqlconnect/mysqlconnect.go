@@ -11,8 +11,8 @@ func Database(mysql string) (*sql.DB, error) {
 		return nil, err
 	}
 
-	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS "files" (
-		id          INTEGER PRIMARY KEY AUTOINCREMENT,
+	_, err = db.Exec(`CREATE TABLE IF NOT EXISTS files (
+		id          INTEGER PRIMARY KEY AUTO_INCREMENT,
 		file_name	VARCHAR(255),
 		date	    VARCHAR(255)
 	)`)
