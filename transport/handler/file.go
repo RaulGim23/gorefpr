@@ -27,12 +27,22 @@ func NewFile(router service.Router, fileService service.File, logger service.Log
 
 // List godoc.
 func (h *file) List(w http.ResponseWriter, r *http.Request) error {
-	files, err := response.FromFilesModel(h.svc.FindAll(r.Context()))
+	page, err := uintFromQuery(r, "page", 0)
+	if err != nil {
+		return response.NewError(w, http.StatusBadRequest, "invalid page value")
+	}
+
+	limit, err := uintFromQuery(r, "limit", 10)
+	if err != nil {
+		return response.NewError(w, http.StatusBadRequest, "invalid limit value")
+	}
+
+	files, total, err := response.FromFilesModel(h.svc.FindAll(r.Context(), page, limit))
 	if err != nil {
 		return response.NewError(w, http.StatusInternalServerError, "no entries")
 	}
 
-	return response.NewList(w, http.StatusOK, files)
+	return response.NewList(w, http.StatusOK, page, limit, total, files)
 }
 
 // Get godoc.

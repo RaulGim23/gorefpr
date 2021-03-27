@@ -63,7 +63,6 @@ func main() {
 
 	var g run.Group
 
-	//ctx, cancel := context.WithCancel(context.Background())
 	g.Add(
 		func() error {
 			return httpd.ListenAndServe()
@@ -72,18 +71,6 @@ func main() {
 			_ = httpd.Shutdown(context.Background())
 		},
 	)
-	/*
-		g.Add(
-			func() error {
-				c := make(chan os.Signal, 1)
-				signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
-				 <-c
-				 cancel()
-				 return nil
 
-			},
-			func(error) {},
-		)
-	*/
 	_ = g.Run()
 }

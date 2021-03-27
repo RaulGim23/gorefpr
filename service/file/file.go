@@ -24,8 +24,8 @@ func (s *serviceImpl) Find(ctx context.Context, id int64) (*model.File, error) {
 }
 
 // FindAll return a list of files.
-func (s *serviceImpl) FindAll(ctx context.Context) ([]model.File, error) {
-	return s.File.FindAll(ctx)
+func (s *serviceImpl) FindAll(ctx context.Context, page, limit uint64) ([]model.File, uint64, error) {
+	return s.File.FindAll(ctx, page, limit)
 }
 
 // Store create a file.
