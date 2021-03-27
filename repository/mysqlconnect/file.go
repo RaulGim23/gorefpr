@@ -2,6 +2,7 @@ package mysqlconnect
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
@@ -30,14 +31,16 @@ func (r *fileRepository) Find(ctx context.Context, id int64) (*model.File, error
 }
 
 // FindAll return a list of files.
-func (r *fileRepository) FindAll(ctx context.Context, page, limit uint64) ([]model.File, uint64, error) {
+func (r *fileRepository) FindAll(ctx context.Context, urlOrder, urlOrderBy string, page, limit uint64) ([]model.File, uint64, error) {
 	var count uint64
 	offset := uint64(0)
 	if page > 0 {
 		offset = limit * (page - 1)
 	}
+	fmt.Println(urlOrderBy, urlOrder)
+	orderBys := []string{urlOrderBy, urlOrder}
 
-	rows, err := squirrel.Select("*").From(sqlFileTable).Limit(limit).Offset(offset).RunWith(r.db).QueryContext(ctx)
+	rows, err := squirrel.Select("*").From(sqlFileTable).OrderByClause(strings.Join(orderBys, " ")).Limit(limit).Offset(offset).RunWith(r.db).QueryContext(ctx)
 	if err != nil {
 		return nil, count, err
 	}
@@ -53,7 +56,6 @@ func (r *fileRepository) FindAll(ctx context.Context, page, limit uint64) ([]mod
 
 		files = append(files, *file)
 	}
-
 	return files, count, nil
 }
 

@@ -13,12 +13,16 @@ type List struct {
 	Results interface{} `json:"results"`
 }
 
-// NewList godoc.
-func NewList(w http.ResponseWriter, status int, page, limit, total uint64, results []File) error {
+func JSON(w http.ResponseWriter, status int, data interface{}) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 
-	return json.NewEncoder(w).Encode(List{
+	return json.NewEncoder(w).Encode(data)
+}
+
+// NewList godoc.
+func NewList(w http.ResponseWriter, status int, page, limit, total uint64, results []File) error {
+	return JSON(w, status, List{
 		Page:    page,
 		Limit:   limit,
 		Total:   total,
