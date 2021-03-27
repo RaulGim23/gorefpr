@@ -11,5 +11,6 @@ func uintFromQuery(r *http.Request, param string, defaultValue uint64) (uint64, 
 	if limitStr != "" {
 		return strconv.ParseUint(limitStr, 10, 64)
 	}
+
 	return defaultValue, nil
 }

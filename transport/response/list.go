@@ -5,15 +5,18 @@ import (
 	"net/http"
 )
 
-// NewList godoc
+// NewList godoc.
 func NewList(w http.ResponseWriter, status int, files []File) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
+
 	return json.NewEncoder(w).Encode(files)
 }
 
+// New return new Json response.
 func New(w http.ResponseWriter, status int, data interface{}) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
+
 	return json.NewEncoder(w).Encode(data)
 }

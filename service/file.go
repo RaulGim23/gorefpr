@@ -6,7 +6,7 @@ import (
 	"files/model"
 )
 
-// User godoc
+// File service definition.
 type File interface {
 	Find(ctx context.Context, id int64) (*model.File, error)
 	FindAll(ctx context.Context) ([]model.File, error)

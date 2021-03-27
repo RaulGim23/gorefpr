@@ -4,23 +4,23 @@ import (
 	"files/model"
 )
 
-// User godoc
+// File godoc.
 type File struct {
-	ID        		int64  `json:"id"`
-	FileName      	string `json:"fileName"`
-	Date    		string `json:"date"`
+	ID       int64  `json:"id"`
+	FileName string `json:"fileName"`
+	Date     string `json:"date"`
 }
 
-// FromUser godoc
+// FromFile godoc.
 func FromFile(file *model.File) File {
 	return File{
-		ID:        	file.ID,
-		FileName:   file.FileName,
-		Date:    	file.Date,
+		ID:       file.ID,
+		FileName: file.FileName,
+		Date:     file.Date,
 	}
 }
 
-// FromUsersModel godoc
+// FromFilesModel godoc.
 func FromFilesModel(files []model.File, err error) ([]File, error) {
 	if err != nil {
 		return nil, err
@@ -31,4 +31,3 @@ func FromFilesModel(files []model.File, err error) ([]File, error) {
 	}
 	return result, err
 }
-
