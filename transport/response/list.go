@@ -13,6 +13,7 @@ type List struct {
 	Results interface{} `json:"results"`
 }
 
+// JSON godoc.
 func JSON(w http.ResponseWriter, status int, data interface{}) error {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
