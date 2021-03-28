@@ -2,7 +2,6 @@ package mysqlconnect
 
 import (
 	"context"
-	"fmt"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
@@ -73,7 +72,6 @@ func (r *fileRepository) Store(ctx context.Context, u *model.File) error {
 // Update a file record.
 func (r *fileRepository) Update(ctx context.Context, f *model.File) error {
 	sql := squirrel.Update(sqlFileTable)
-	fmt.Println(f.Date)
 	if strings.TrimSpace(f.FileName) != "" {
 		sql = sql.Set("file_name", f.FileName)
 	}
