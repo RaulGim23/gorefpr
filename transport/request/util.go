@@ -16,6 +16,7 @@ type File struct {
 
 }
 
+// Unmarshal godoc.
 func Unmarshal(reader io.ReadCloser, payload interface{}) error {
 	body, err := ioutil.ReadAll(reader)
 	if err != nil {
@@ -35,6 +36,7 @@ func (d *File) ToModel() *model.File {
 	}
 }
 
+// FileFromPayload godoc.
 func FileFromPayload(reader io.ReadCloser) (*model.File, error) {
 	var f File
 	err := Unmarshal(reader, &f)
