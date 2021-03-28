@@ -36,8 +36,11 @@ func (r *fileRepository) FindAll(ctx context.Context, orderBys []string, page, l
 	if page > 0 {
 		offset = limit * (page - 1)
 	}
-
-	rows, err := squirrel.Select("*").From(sqlFileTable).OrderBy(strings.Join(orderBys, " ")).Limit(limit).Offset(offset).RunWith(r.db).QueryContext(ctx)
+	sql := squirrel.Select("*").From(sqlFileTable).Limit(limit).Offset(offset)
+	if len(orderBys) > 0 {
+		sql = sql.OrderBy(strings.Join(orderBys, " "))
+	}
+	rows, err := sql.RunWith(r.db).QueryContext(ctx)
 	if err != nil {
 		return nil, count, err
 	}
