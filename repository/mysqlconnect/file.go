@@ -2,6 +2,7 @@ package mysqlconnect
 
 import (
 	"context"
+	"fmt"
 	"strings"
 
 	"github.com/Masterminds/squirrel"
@@ -37,7 +38,7 @@ func (r *fileRepository) FindAll(ctx context.Context, orderBys []string, page, l
 		offset = limit * (page - 1)
 	}
 
-	rows, err := squirrel.Select("*").From(sqlFileTable).OrderByClause(strings.Join(orderBys, " ")).Limit(limit).Offset(offset).RunWith(r.db).QueryContext(ctx)
+	rows, err := squirrel.Select("*").From(sqlFileTable).OrderBy(strings.Join(orderBys, " ")).Limit(limit).Offset(offset).RunWith(r.db).QueryContext(ctx)
 	if err != nil {
 		return nil, count, err
 	}
@@ -72,7 +73,7 @@ func (r *fileRepository) Store(ctx context.Context, u *model.File) error {
 // Update a file record.
 func (r *fileRepository) Update(ctx context.Context, f *model.File) error {
 	sql := squirrel.Update(sqlFileTable)
-
+	fmt.Println(f.Date)
 	if strings.TrimSpace(f.FileName) != "" {
 		sql = sql.Set("file_name", f.FileName)
 	}

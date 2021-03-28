@@ -39,10 +39,8 @@ func (s *serviceImpl) Update(ctx context.Context, update *model.File) error {
 	if err != nil {
 		return errors.New("user not found ")
 	}
-
 	file.FileName = update.FileName
-	file.Date = update.FileName
-
+	file.Date = update.Date
 	return s.File.Update(ctx, file)
 }
 

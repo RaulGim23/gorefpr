@@ -1,19 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="8b7ad588-dac6-4a4f-92fd-b37204afcb1f" name="Default Changelist" comment="Addressed code review. Added OrderBy.">
+      <change afterPath="$PROJECT_DIR$/transport/request/util.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/file.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/mysqlconnect/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/mysqlconnect/file.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/file.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/file/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/file/file.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/transport/handler/file.go" beforeDir="false" afterPath="$PROJECT_DIR$/transport/handler/file.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/transport/handler/util.go" beforeDir="false" afterPath="$PROJECT_DIR$/transport/handler/util.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
   </component>
   <component name="GOROOT" url="file://$PROJECT_DIR$/../../../../Program Files/Go" />
   <component name="Git.Settings">
@@ -34,12 +42,14 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="DefaultGoTemplateProperty" value="Go File" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
     <property name="go.sdk.automatically.set" value="true" />
     <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../tourOfGO" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.tslint" value="project" />
