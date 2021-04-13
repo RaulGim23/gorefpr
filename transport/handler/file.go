@@ -1,8 +1,10 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gorilla/mux"
 
@@ -77,7 +79,11 @@ func (h *file) Create(w http.ResponseWriter, r *http.Request) error {
 	if err != nil {
 		return response.NewError(w, http.StatusBadRequest, "malformed request")
 	}
-
+	date, err := time.Parse("YYYY-MM-DD", file.Date)
+	if err != nil {
+		return response.NewError(w, http.StatusBadRequest, "The date should be of type YYYY-MM-DD")
+	}
+	fmt.Println(date)
 	err = h.svc.Store(r.Context(), file)
 	if err != nil {
 		return response.NewError(w, http.StatusInternalServerError, "internal error")

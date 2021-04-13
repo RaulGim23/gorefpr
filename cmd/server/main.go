@@ -33,7 +33,7 @@ func main() {
 	flag.StringVar(&httpServerAddress, "addr", ":3380", "The http listen address")
 	flag.Parse()
 
-	db, err := mysqlconnect.Database("root:@tcp(127.0.0.1:3306)/asd")
+	db, err := mysqlconnect.Database("root:@tcp(127.0.0.1:3306)/files")
 	if err != nil {
 		log.Printf("database %s", err)
 
