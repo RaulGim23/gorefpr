@@ -21,13 +21,13 @@ func FromFile(file *model.File) File {
 }
 
 // FromFilesModel godoc.
-func FromFilesModel(files []model.File, err error) ([]File, error) {
+func FromFilesModel(files []model.File, count uint64, err error) ([]File, uint64, error) {
 	if err != nil {
-		return nil, err
+		return nil, count, err
 	}
 	result := make([]File, len(files))
 	for i, file := range files {
 		result[i] = FromFile(&file)
 	}
-	return result, err
+	return result, count, err
 }

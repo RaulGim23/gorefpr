@@ -24,8 +24,8 @@ func (s *serviceImpl) Find(ctx context.Context, id int64) (*model.File, error) {
 }
 
 // FindAll return a list of files.
-func (s *serviceImpl) FindAll(ctx context.Context) ([]model.File, error) {
-	return s.File.FindAll(ctx)
+func (s *serviceImpl) FindAll(ctx context.Context, orderBys[]string, page, limit uint64) ([]model.File, uint64, error) {
+	return s.File.FindAll(ctx, orderBys, page, limit)
 }
 
 // Store create a file.
@@ -39,10 +39,8 @@ func (s *serviceImpl) Update(ctx context.Context, update *model.File) error {
 	if err != nil {
 		return errors.New("user not found ")
 	}
-
 	file.FileName = update.FileName
-	file.Date = update.FileName
-
+	file.Date = update.Date
 	return s.File.Update(ctx, file)
 }
 

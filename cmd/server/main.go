@@ -33,7 +33,7 @@ func main() {
 	flag.StringVar(&httpServerAddress, "addr", ":3380", "The http listen address")
 	flag.Parse()
 
-	db, err := mysqlconnect.Database("root:@tcp(127.0.0.1:3306)/asd")
+	db, err := mysqlconnect.Database("root:@tcp(127.0.0.1:3306)/files")
 	if err != nil {
 		log.Printf("database %s", err)
 
@@ -63,7 +63,6 @@ func main() {
 
 	var g run.Group
 
-	//ctx, cancel := context.WithCancel(context.Background())
 	g.Add(
 		func() error {
 			return httpd.ListenAndServe()
@@ -72,18 +71,6 @@ func main() {
 			_ = httpd.Shutdown(context.Background())
 		},
 	)
-	/*
-		g.Add(
-			func() error {
-				c := make(chan os.Signal, 1)
-				signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
-				 <-c
-				 cancel()
-				 return nil
 
-			},
-			func(error) {},
-		)
-	*/
 	_ = g.Run()
 }

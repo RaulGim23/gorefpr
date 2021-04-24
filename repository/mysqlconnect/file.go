@@ -30,10 +30,19 @@ func (r *fileRepository) Find(ctx context.Context, id int64) (*model.File, error
 }
 
 // FindAll return a list of files.
-func (r *fileRepository) FindAll(ctx context.Context) ([]model.File, error) {
-	rows, err := squirrel.Select("*").From(sqlFileTable).RunWith(r.db).QueryContext(ctx)
+func (r *fileRepository) FindAll(ctx context.Context, orderBys []string, page, limit uint64) ([]model.File, uint64, error) {
+	var count uint64
+	offset := uint64(0)
+	if page > 0 {
+		offset = limit * (page - 1)
+	}
+	sql := squirrel.Select("*").From(sqlFileTable).Limit(limit).Offset(offset)
+	if len(orderBys) > 0 {
+		sql = sql.OrderBy(strings.Join(orderBys, " "))
+	}
+	rows, err := sql.RunWith(r.db).QueryContext(ctx)
 	if err != nil {
-		return nil, err
+		return nil, count, err
 	}
 	defer rows.Close()
 
@@ -42,13 +51,12 @@ func (r *fileRepository) FindAll(ctx context.Context) ([]model.File, error) {
 	for rows.Next() {
 		file, err := r.Scan(rows)
 		if err != nil {
-			return nil, err
+			return nil, count, err
 		}
 
 		files = append(files, *file)
 	}
-
-	return files, nil
+	return files, count, nil
 }
 
 // Store create a file record.
@@ -67,7 +75,6 @@ func (r *fileRepository) Store(ctx context.Context, u *model.File) error {
 // Update a file record.
 func (r *fileRepository) Update(ctx context.Context, f *model.File) error {
 	sql := squirrel.Update(sqlFileTable)
-
 	if strings.TrimSpace(f.FileName) != "" {
 		sql = sql.Set("file_name", f.FileName)
 	}
